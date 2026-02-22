@@ -1,96 +1,54 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Cute Surprise 🎀</title>
-
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
-<style>
-body {
-  margin: 0;
-  height: 100vh;
-  background: linear-gradient(135deg, #ffd6e8, #fff3b0);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: Arial, sans-serif;
-  overflow: hidden;
-  flex-direction: column;
-  text-align: center;
-}
-
-#countdown {
-  font-size: 60px;
-  font-weight: bold;
-}
-
-#message {
-  font-size: 50px;
-  display: none;
-  animation: pop 1.5s ease forwards;
-}
-
-button {
-  padding: 15px 25px;
-  font-size: 18px;
-  border: none;
-  border-radius: 30px;
-  background-color: #ff69b4;
-  color: white;
-  cursor: pointer;
-  margin-top: 20px;
-}
-
-@keyframes pop {
-  from { transform: scale(0); }
-  to { transform: scale(1); }
-}
-</style>
-</head>
-
-<body>
-
-<div id="countdown">5</div>
-<div id="message">🎉 Hello Bua 🤭♥️🐣</div>
-
-<button onclick="startSurprise()">Tap for Surprise 🎉</button>
-
-<audio id="music" loop>
-  <!-- 🔴 REPLACE THIS LINK WITH YOUR MP3 LINK -->
-  <source src="YOUR_MP3_LINK_HERE" type="audio/mp3">
-</audio>
-
 <script>
 let count = 5;
 let countdownEl = document.getElementById("countdown");
 let messageEl = document.getElementById("message");
+let button = document.querySelector("button");
+let music = document.getElementById("music");
 
+// Hide message & button initially
+messageEl.style.display = "none";
+button.style.display = "none";
+
+// Countdown logic
 let timer = setInterval(() => {
   count--;
   countdownEl.textContent = count;
+
   if (count === 0) {
     clearInterval(timer);
-    countdownEl.style.display = "none";
-    messageEl.style.display = "block";
-    fireworks();
+    countdownEl.innerHTML = "Ready? 🎀";
+    button.style.display = "inline-block"; // Show button ONLY after countdown
   }
 }, 1000);
 
-function fireworks() {
-  let duration = 3 * 1000;
+// This runs ONLY when button is clicked
+function startSurprise() {
+
+  // Hide countdown and button
+  countdownEl.style.display = "none";
+  button.style.display = "none";
+
+  // Show message
+  messageEl.style.display = "block";
+
+  // Play music
+  music.play();
+
+  // Fireworks effect
+  let duration = 4 * 1000;
   let end = Date.now() + duration;
 
   (function frame() {
     confetti({
-      particleCount: 5,
+      particleCount: 6,
       angle: 60,
-      spread: 55,
+      spread: 70,
       origin: { x: 0 }
     });
     confetti({
-      particleCount: 5,
+      particleCount: 6,
       angle: 120,
-      spread: 55,
+      spread: 70,
       origin: { x: 1 }
     });
 
@@ -99,16 +57,4 @@ function fireworks() {
     }
   }());
 }
-
-function startSurprise() {
-  document.getElementById("music").play();
-  confetti({
-    particleCount: 200,
-    spread: 100,
-    origin: { y: 0.6 }
-  });
-}
 </script>
-
-</body>
-</html>
