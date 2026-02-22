@@ -1,123 +1,132 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Special Surprise 🎀</title>
+  <meta charset="UTF-8">
+  <title>Something Cute 🎀</title>
 
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #ffd6e8, #ffeaf4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+      text-align: center;
+    }
 
-<style>
-body {
-  margin: 0;
-  height: 100vh;
-  background: linear-gradient(135deg, #ffd6e8, #fff3b0);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: Arial, sans-serif;
-  overflow: hidden;
-  flex-direction: column;
-  text-align: center;
-}
+    #container {
+      z-index: 2;
+    }
 
-#countdown {
-  font-size: 70px;
-  font-weight: bold;
-  color: #ff4da6;
-}
+    h1 {
+      font-size: 40px;
+      color: #ff4d88;
+    }
 
-#message {
-  font-size: 55px;
-  display: none;
-  animation: pop 1.5s ease forwards;
-}
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      border: none;
+      border-radius: 30px;
+      background-color: #ff66a3;
+      color: white;
+      cursor: pointer;
+      margin-top: 20px;
+    }
 
-button {
-  padding: 15px 30px;
-  font-size: 20px;
-  border: none;
-  border-radius: 30px;
-  background-color: #ff69b4;
-  color: white;
-  cursor: pointer;
-  margin-top: 20px;
-  box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
-  display: none;
-  animation: glow 1.5s infinite alternate;
-}
+    button:hover {
+      background-color: #ff3385;
+    }
 
-@keyframes pop {
-  from { transform: scale(0); }
-  to { transform: scale(1); }
-}
+    #countdown {
+      font-size: 50px;
+      color: #ff3385;
+    }
 
-@keyframes glow {
-  from { box-shadow: 0 0 10px #ff69b4; }
-  to { box-shadow: 0 0 25px #ff1493; }
-}
-</style>
+    /* Floating hearts */
+    .heart {
+      position: fixed;
+      bottom: -10px;
+      animation: floatUp 4s linear forwards;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) scale(1.5);
+        opacity: 0;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<div id="countdown">5</div>
-<div id="message">🎉 Hello Bua 🤭♥️🐣</div>
+<div id="container">
+  <div id="countdown">3</div>
+  <button id="surpriseBtn" style="display:none;">Tap for Surprise 🎉</button>
+  <h1 id="message" style="display:none;">Hello Bua 🤭♥️🐣 🎉</h1>
+</div>
 
-<button onclick="startSurprise()">Tap to Start Magic 🎀</button>
-
+<!-- Music -->
 <audio id="music" loop>
   <source src="https://raw.githubusercontent.com/ashwinsunny001-cloud/Personal/refs/heads/main/45%20Johannes%20Brahms%20-%20Lullaby%2C%201868%20%20.mp3" type="audio/mp3">
 </audio>
 
 <script>
-let count = 5;
-let countdownEl = document.getElementById("countdown");
-let messageEl = document.getElementById("message");
-let button = document.querySelector("button");
-let music = document.getElementById("music");
+  let count = 3;
+  const countdownEl = document.getElementById("countdown");
+  const button = document.getElementById("surpriseBtn");
+  const message = document.getElementById("message");
+  const music = document.getElementById("music");
 
-// Countdown
-let timer = setInterval(() => {
-  count--;
-  countdownEl.textContent = count;
+  // Countdown
+  const timer = setInterval(() => {
+    count--;
+    countdownEl.innerText = count;
 
-  if (count === 0) {
-    clearInterval(timer);
-    countdownEl.innerHTML = "Ready? 🎀";
-    button.style.display = "inline-block";
-  }
-}, 1000);
-
-// Button click surprise
-function startSurprise() {
-
-  countdownEl.style.display = "none";
-  button.style.display = "none";
-  messageEl.style.display = "block";
-
-  music.play();
-
-  let duration = 4 * 1000;
-  let end = Date.now() + duration;
-
-  (function frame() {
-    confetti({
-      particleCount: 6,
-      angle: 60,
-      spread: 70,
-      origin: { x: 0 }
-    });
-    confetti({
-      particleCount: 6,
-      angle: 120,
-      spread: 70,
-      origin: { x: 1 }
-    });
-
-    if (Date.now() < end) {
-      requestAnimationFrame(frame);
+    if (count === 0) {
+      clearInterval(timer);
+      countdownEl.style.display = "none";
+      button.style.display = "inline-block";
     }
-  }());
-}
+  }, 1000);
+
+  // Floating hearts function
+  function createHeart() {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "💖";
+
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = Math.random() * 20 + 20 + "px";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+      heart.remove();
+    }, 4000);
+  }
+
+  // On button click
+  button.addEventListener("click", function() {
+    message.style.display = "block";
+    button.style.display = "none";
+
+    // Start music
+    music.play();
+
+    // Start hearts
+    setInterval(createHeart, 300);
+  });
 </script>
 
 </body>
